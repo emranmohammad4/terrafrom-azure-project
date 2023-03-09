@@ -3,8 +3,8 @@ resource "azurerm_resource_group" "web-rg" {
   name     = "web-rg"
   location = "East US"
   tags = {
-  environment = "dev"
-  tier = "frontend"
+    environment = "dev"
+    tier        = "frontend"
   }
 }
 
