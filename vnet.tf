@@ -56,3 +56,39 @@ resource "azurerm_network_security_rule" "web-http" {
   resource_group_name         = azurerm_resource_group.web-rg.name
   network_security_group_name = azurerm_network_security_group.web-nsg.name
 }
+
+#associate nsg with subnet
+
+resource "azurerm_subnet_network_security_group_association" "web-nsg-association" {
+  subnet_id                 = azurerm_subnet.web-subnet.id
+  network_security_group_id = azurerm_network_security_group.web-nsg.id
+}
+
+#public ip 
+
+resource "azurerm_public_ip" "web-public-ip" {
+  name                = "web-public-ip"
+  resource_group_name = azurerm_resource_group.web-rg.name
+  location            = azurerm_resource_group.web-rg.location
+  allocation_method   = "Static"
+
+  tags = {
+    environment = "dev"
+  }
+}
+
+# Netwrok Interface card
+
+resource "azurerm_network_interface" "web-nic" {
+  name                = "web-nic"
+  location            = azurerm_resource_group.web-rg.location
+  resource_group_name = azurerm_resource_group.web-rg.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.web-subnet.id
+    public_ip_address_id = azurerm_public_ip.web-public-ip.id
+    private_ip_address_allocation = "Dynamic"
+    
+  }
+}
