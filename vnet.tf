@@ -87,8 +87,8 @@ resource "azurerm_network_interface" "web-nic" {
   ip_configuration {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.web-subnet.id
-    public_ip_address_id = azurerm_public_ip.web-public-ip.id
+    public_ip_address_id          = azurerm_public_ip.web-public-ip.id
     private_ip_address_allocation = "Dynamic"
-    
+
   }
 }
